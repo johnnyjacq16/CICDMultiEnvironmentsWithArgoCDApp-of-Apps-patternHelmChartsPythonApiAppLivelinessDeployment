@@ -36,6 +36,5 @@ spec:
                 name: python-api-link-service-to-ingress
                 port:
                   name: use-annotation
-                  number: 80
 
 {{- end }}
