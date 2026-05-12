@@ -5,7 +5,7 @@ metadata:
   name: python-api-link-service-to-ingress
 
 spec:
-  type: LoadBalancer
+  type: ClusterIP
 
   selector:
     app: python-api-link-service-to-python-app-label

@@ -6,11 +6,25 @@ kind: Ingress
 metadata:
   name: python-api-ingress
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      # Replace 'python-api-link-service-to-ingress' with your exact service name
+      alb.ingress.kubernetes.io/actions.python-api-link-service-to-ingress: >
+        {
+          "type": "url-rewrite",
+          "urlRewriteConfig": {
+            "rewrites": [
+              {
+                "regex": "^/api/(.*)",
+                "replace": "/$1"
+              }
+            ]
+          }
+        }
 
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
 
   rules:
     - host: {{ .Values.ingress.host }}
@@ -22,6 +36,7 @@ spec:
               service:
                 name: python-api-link-service-to-ingress
                 port:
+                  name: use-annotation
                   number: 80
 
 {{- end }}
