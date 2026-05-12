@@ -6,22 +6,21 @@ kind: Ingress
 metadata:
   name: python-api-ingress
   annotations:
-    annotations:
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: ip
-      # Replace 'python-api-link-service-to-ingress' with your exact service name
-      alb.ingress.kubernetes.io/actions.python-api-link-service-to-ingress: >
-        {
-          "type": "url-rewrite",
-          "urlRewriteConfig": {
-            "rewrites": [
-              {
-                "regex": "^/api/(.*)",
-                "replace": "/$1"
-              }
-            ]
-          }
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # Use '|' to tell YAML: "Everything indented below this is ONE long string"
+    alb.ingress.kubernetes.io/actions.python-api-link-service-to-ingress: |
+      {
+        "type": "url-rewrite",
+        "urlRewriteConfig": {
+          "rewrites": [
+            {
+              "regex": "^/api/(.*)",
+              "replace": "/$1"
+            }
+          ]
         }
+      }
 
 spec:
   ingressClassName: alb
